@@ -16,6 +16,6 @@ import { PrismaModule } from './prisma/prisma.module';
     PrismaModule,
   ],
   controllers: [AppController, UsersController, ReportsController],
-  providers: [AppService],
+  providers: [AppService, PrismaModule],
 })
 export class AppModule {}
