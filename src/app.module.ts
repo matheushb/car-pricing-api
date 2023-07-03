@@ -7,6 +7,7 @@ import { ReportsController } from './reports/reports.controller';
 import { ReportsModule } from './reports/reports.module';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { AuthService } from './users/auth/auth.service';
 
 @Module({
   imports: [
@@ -16,6 +17,6 @@ import { PrismaModule } from './prisma/prisma.module';
     PrismaModule,
   ],
   controllers: [AppController, UsersController, ReportsController],
-  providers: [AppService, PrismaModule],
+  providers: [AppService, AuthService],
 })
 export class AppModule {}
