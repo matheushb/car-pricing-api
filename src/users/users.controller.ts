@@ -9,10 +9,14 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto';
+import { AuthService } from './auth/auth.service';
 
 @Controller('/user')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
   @Get()
   findAll() {
@@ -24,19 +28,14 @@ export class UsersController {
     return this.usersService.findById(id);
   }
 
-  @Get('/:email')
-  findByEmail(@Param('email') email: string) {
-    return this.usersService.findByEmail(email);
-  }
-
   @Post('/signup')
   signup(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.signup(createUserDto);
+    return this.authService.signup(createUserDto);
   }
 
   @Post('/login')
   login(@Body() loginUserDto: LoginUserDto) {
-    return this.usersService.login(loginUserDto);
+    return this.authService.login(loginUserDto);
   }
 
   @Patch('/:id')

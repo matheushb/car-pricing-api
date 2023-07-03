@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
 export class UsersRepository {
@@ -22,7 +23,7 @@ export class UsersRepository {
 
   async signup(createUserDto: CreateUserDto) {
     return await this.prismaService.user.create({
-      data: createUserDto,
+      data: { ...createUserDto, password: undefined },
     });
   }
 
@@ -36,6 +37,14 @@ export class UsersRepository {
   }
 
   async deleteOne(userId: string) {
-    return await this.prismaService.user.delete({ where: { id: +userId } });
+    try {
+      return await this.prismaService.user.delete({ where: { id: +userId } });
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new NotFoundException(`User with the id ${userId} not found`);
+        }
+      }
+    }
   }
 }
