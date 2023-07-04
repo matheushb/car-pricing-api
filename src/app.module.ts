@@ -7,9 +7,10 @@ import { ReportsController } from './reports/reports.controller';
 import { ReportsModule } from './reports/reports.module';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -21,6 +22,6 @@ import { JwtModule } from '@nestjs/jwt';
     JwtModule,
   ],
   controllers: [AppController, UsersController, ReportsController],
-  providers: [AppService, AuthService],
+  providers: [AppService, { provide: APP_GUARD, useClass: JwtAuthGuard }],
 })
 export class AppModule {}
