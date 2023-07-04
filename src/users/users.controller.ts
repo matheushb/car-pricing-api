@@ -8,15 +8,11 @@ import {
   Post,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto';
-import { AuthService } from '../auth/auth.service';
+import { UpdateUserDto } from './dto';
 
 @Controller('/user')
 export class UsersController {
-  constructor(
-    private readonly usersService: UsersService,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
   findAll() {
