@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 
 @Injectable()
 export class UsersRepository {
@@ -27,9 +26,8 @@ export class UsersRepository {
       data: { email: createUserDto.email, password: createUserDto.password },
     });
     return {
-      id: newUser.id,
-      email: newUser.email,
-      createdAt: newUser.createdAt,
+      ...newUser,
+      password: undefined,
     };
   }
 
