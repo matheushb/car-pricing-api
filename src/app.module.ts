@@ -7,7 +7,8 @@ import { ReportsController } from './reports/reports.controller';
 import { ReportsModule } from './reports/reports.module';
 import { UsersModule } from './users/users.module';
 import { PrismaModule } from './prisma/prisma.module';
-import { AuthService } from './users/auth/auth.service';
+import { AuthService } from './auth/auth.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthService } from './users/auth/auth.service';
     ReportsModule,
     UsersModule,
     PrismaModule,
+    AuthModule,
   ],
   controllers: [AppController, UsersController, ReportsController],
   providers: [AppService, AuthService],
