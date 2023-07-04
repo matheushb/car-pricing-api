@@ -25,8 +25,9 @@ export class AuthService {
     };
 
     return {
-      email: user.email,
-      token: await this.signJwtToken(user),
+      accessToken: jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }),
     };
   }
 
@@ -55,15 +56,5 @@ export class AuthService {
       ...user,
       password: undefined,
     };
-  }
-
-  async signJwtToken(payload: UserPayload) {
-    return jwt.sign(
-      { email: payload.email, id: payload.id },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: process.env.JWT_EXPIRES_IN,
-      },
-    );
   }
 }
