@@ -21,7 +21,6 @@ export class UsersRepository {
   }
 
   async signup(createUserDto: CreateUserDto) {
-    console.log(createUserDto);
     const newUser = await this.prismaService.user.create({
       data: { email: createUserDto.email, password: createUserDto.password },
     });
