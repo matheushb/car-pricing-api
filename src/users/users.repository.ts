@@ -22,15 +22,21 @@ export class UsersRepository {
   }
 
   async signup(createUserDto: CreateUserDto) {
-    return await this.prismaService.user.create({
-      data: { ...createUserDto, password: undefined },
+    console.log(createUserDto);
+    const newUser = await this.prismaService.user.create({
+      data: { email: createUserDto.email, password: createUserDto.password },
     });
+    return {
+      id: newUser.id,
+      email: newUser.email,
+      createdAt: newUser.createdAt,
+    };
   }
 
   async updateOne(userId: string, updateUserDto: UpdateUserDto) {
     return await this.prismaService.user.update({
       where: {
-        id: +userId,
+        id: Number(userId),
       },
       data: updateUserDto,
     });
@@ -40,10 +46,8 @@ export class UsersRepository {
     try {
       return await this.prismaService.user.delete({ where: { id: +userId } });
     } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          throw new NotFoundException(`User with the id ${userId} not found`);
-        }
+      if (err.code === 'P2025') {
+        throw new NotFoundException(`User with the id ${userId} not found`);
       }
     }
   }
