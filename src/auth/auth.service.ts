@@ -25,7 +25,7 @@ export class AuthService {
     return this.userRepository.signup(createUserDto);
   }
 
-  async login(userLoginDto: LoginUserDto) {
+  async validate(userLoginDto: LoginUserDto) {
     const user = await this.userRepository.findByEmail(userLoginDto.email);
     if (
       !user ||
@@ -33,13 +33,10 @@ export class AuthService {
     ) {
       throw new UnauthorizedException('Credentials dont match');
     }
-    const token = await this.signJwtToken(user);
 
     return {
-      id: user.id,
-      email: user.email,
-      createdAt: user.createdAt,
-      token,
+      ...user,
+      password: undefined,
     };
   }
 
